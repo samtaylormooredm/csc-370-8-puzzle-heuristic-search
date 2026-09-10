@@ -98,7 +98,6 @@ class Board:
             new_row = row + row_change
             new_col = col + col_change
 
-            # Only allow moves that stay within the 3-by-3 board.
             if 0 <= new_row < 3 and 0 <= new_col < 3:
                 new_blank = new_row * 3 + new_col
 
