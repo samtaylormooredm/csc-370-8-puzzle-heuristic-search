@@ -1,8 +1,7 @@
 class Board:
     """Represent a single state of the 8-puzzle board."""
-    GOAL = (0, 1, 2,
-            3, 4, 5,
-            6, 7, 8)
+
+    GOAL = (0, 1, 2, 3, 4, 5, 6, 7, 8)
 
     def __init__(self, tiles):
         """
@@ -41,12 +40,12 @@ class Board:
         rows = []
 
         for i in range(0, 9, 3):
-            row = self.tiles[i:i + 3]
+            row = self.tiles[i : i + 3]
             row_string = " ".join("_" if value == 0 else str(value) for value in row)
             rows.append(row_string)
 
         return "\n".join(rows)
-    
+
     def is_goal(self):
         """
         Check whether the board is the goal state.
@@ -68,7 +67,7 @@ class Board:
             Index of the blank tile in the flattened board.
         """
         return self.tiles.index(0)
-   
+
     def get_neighbors(self):
         """
         Generate all board states reachable in one legal move.
@@ -90,9 +89,9 @@ class Board:
         # Each tuple represents a change in row and column.
         moves = [
             (-1, 0),  # up
-            (1, 0),   # down
+            (1, 0),  # down
             (0, -1),  # left
-            (0, 1)    # right
+            (0, 1),  # right
         ]
 
         for row_change, col_change in moves:
@@ -108,11 +107,10 @@ class Board:
 
                 new_tiles[blank], new_tiles[new_blank] = (
                     new_tiles[new_blank],
-                    new_tiles[blank]
+                    new_tiles[blank],
                 )
 
                 # Create a new Board rather than modifying the current state.
                 neighbors.append(Board(new_tiles))
 
         return neighbors
-    
