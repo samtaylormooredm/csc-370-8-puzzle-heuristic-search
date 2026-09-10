@@ -16,7 +16,6 @@ class Board:
         if set(tiles) != set(range(9)):
             raise ValueError("Board must contain each value 0-8 exactly once.")
 
-        # Store the board as an immutable tuple.
         self.tiles = tuple(tiles)
 
     def __str__(self):
@@ -37,19 +36,40 @@ class Board:
         return self.tiles.index(0)
    
     def get_neighbors(self):
-        # Represent as psuedocode for now
-            # locate blank
-            # determine blank row and column
+        blank = self.blank_index()
 
-            # for each direction (up, down, left, right):
-            #     calculate destination position
+        # Convert the blank's 1D index into row and column coordinates.
+        row = blank // 3
+        col = blank % 3
 
-            #     if destination is valid:
-            #         copy board
-            #         swap blank with destination tile
-            #         add resulting board to neighbors
+        neighbors = []
 
-            # return neighbors
-        return 0
-    
+        # Each tuple represents a change in row and column.
+        moves = [
+            (-1, 0),  # up
+            (1, 0),   # down
+            (0, -1),  # left
+            (0, 1)    # right
+        ]
+
+        for row_change, col_change in moves:
+            new_row = row + row_change
+            new_col = col + col_change
+
+            # Only allow moves that stay within the 3-by-3 board.
+            if 0 <= new_row < 3 and 0 <= new_col < 3:
+                new_blank = new_row * 3 + new_col
+
+                # Convert to a list temporarily so the values can be swapped.
+                new_tiles = list(self.tiles)
+
+                new_tiles[blank], new_tiles[new_blank] = (
+                    new_tiles[new_blank],
+                    new_tiles[blank]
+                )
+
+                # Create a new Board rather than modifying the current state.
+                neighbors.append(Board(new_tiles))
+
+        return neighbors
     
