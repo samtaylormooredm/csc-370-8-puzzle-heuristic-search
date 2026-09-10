@@ -20,6 +20,7 @@ class Board:
         self.tiles = tuple(tiles)
 
     def __str__(self):
+
         rows = []
 
         for i in range(0, 9, 3):
@@ -36,18 +37,6 @@ class Board:
         return self.tiles.index(0)
    
     def get_neighbors(self):
-        """
-        Generate all board states reachable in one legal move.
-
-        A legal move swaps the blank space with a tile directly above,
-        below, left, or right of it.
-
-        Returns
-        -------
-        list of Board
-            All neighboring board states reachable from the current state.
-        """
-        
         # Represent as psuedocode for now
             # locate blank
             # determine blank row and column
@@ -61,4 +50,6 @@ class Board:
             #         add resulting board to neighbors
 
             # return neighbors
+        return 0
+    
     
