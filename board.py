@@ -6,9 +6,20 @@ class Board:
 
     def __init__(self, tiles):
         """
-        Initialize an 8-puzzle board with error handling. 
-        Tiles should contain the numbers 0-8 exactly once, such
-        that 0 represents the blank tile.
+        Initialize an 8-puzzle board.
+
+        Parameters
+        ----------
+        tiles : iterable of int
+            The 9 board values in row-major order. Values must contain each
+            integer from 0 through 8 exactly once. The value 0 represents
+            the blank tile.
+
+        Raises
+        ------
+        ValueError
+            If the board does not contain exactly 9 values or does not contain
+            each value from 0 through 8 exactly once.
         """
         if len(tiles) != 9:
             raise ValueError("Board must contain exactly 9 positions.")
@@ -19,7 +30,14 @@ class Board:
         self.tiles = tuple(tiles)
 
     def __str__(self):
+        """
+        Return the board as a formatted 3-by-3 string.
 
+        Returns
+        -------
+        str
+            String representation of the board, with 0 displayed as "_".
+        """
         rows = []
 
         for i in range(0, 9, 3):
@@ -30,12 +48,37 @@ class Board:
         return "\n".join(rows)
     
     def is_goal(self):
+        """
+        Check whether the board is the goal state.
+
+        Returns
+        -------
+        bool
+            True if the board matches the goal state, otherwise False.
+        """
         return self.tiles == Board.GOAL
 
     def blank_index(self):
+        """
+        Return the index of the blank tile.
+
+        Returns
+        -------
+        int
+            Index of the blank tile in the flattened board.
+        """
         return self.tiles.index(0)
    
     def get_neighbors(self):
+        """
+        Generate all board states reachable in one legal move.
+
+        Returns
+        -------
+        list of Board
+            Neighboring board states produced by moving the blank up, down,
+            left, or right when legal.
+        """
         blank = self.blank_index()
 
         # Convert the blank's 1D index into row and column coordinates.
