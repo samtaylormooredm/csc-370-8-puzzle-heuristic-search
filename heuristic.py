@@ -62,10 +62,7 @@ def h2(board):
         goal_row = goal_index // BOARD_SIZE
         goal_col = goal_index % BOARD_SIZE
 
-        tile_distance = (
-            abs(current_row - goal_row)
-            + abs(current_col - goal_col)
-        )
+        tile_distance = abs(current_row - goal_row) + abs(current_col - goal_col)
 
         total_distance += tile_distance
 

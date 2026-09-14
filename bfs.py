@@ -1,8 +1,7 @@
-from collections import deque
 import random
+from collections import deque
 
 from board import Board
-
 
 MAX_DEPTH = 24
 SAMPLES_PER_DEPTH = 100
@@ -36,14 +35,10 @@ def generate_states_by_depth(max_depth=MAX_DEPTH):
     queue = deque([goal])
 
     # We use board.tiles as the dictionary key.
-    distance = {
-        goal.tiles: 0
-    }
+    distance = {goal.tiles: 0}
 
     # Group boards by their exact BFS distance.
-    states_by_depth = {
-        0: [goal]
-    }
+    states_by_depth = {0: [goal]}
 
     while queue:
         current = queue.popleft()
@@ -72,10 +67,7 @@ def generate_states_by_depth(max_depth=MAX_DEPTH):
     return states_by_depth, distance
 
 
-def sample_experiment_boards(
-    states_by_depth,
-    samples_per_depth=SAMPLES_PER_DEPTH
-):
+def sample_experiment_boards(states_by_depth, samples_per_depth=SAMPLES_PER_DEPTH):
     """
     Randomly sample boards from each even search depth.
 
@@ -110,15 +102,12 @@ def sample_experiment_boards(
         boards_at_this_depth = states_by_depth[depth]
 
         if len(boards_at_this_depth) == 0:
-            raise ValueError(
-                f"No boards found at depth {depth}."
-            )
+            raise ValueError(f"No boards found at depth {depth}.")
 
         # choices() samples with replacement.
         # The same board may appear more than once.
         experiment_boards[depth] = random.choices(
-            boards_at_this_depth,
-            k=samples_per_depth
+            boards_at_this_depth, k=samples_per_depth
         )
 
     return experiment_boards
