@@ -2,13 +2,23 @@ from board import Board
 
 BOARD_SIZE = 3
 
+
 def h1(board):
     """
-    h1: the number of misplaced numbered tiles.
+    Calculate the number of misplaced numbered tiles.
 
     The blank tile, represented by 0, is not counted.
-    """
 
+    Parameters
+    ----------
+    board : Board
+        The 8-puzzle board to evaluate.
+
+    Returns
+    -------
+    int
+        The number of numbered tiles not in their goal positions.
+    """
     misplaced = 0
 
     for index, tile in enumerate(board.tiles):
@@ -23,25 +33,34 @@ def h1(board):
 
 def h2(board):
     """
-    h2: the sum of the Manhattan distances of all numbered tiles
-    from their goal positions.
+    Calculate the total Manhattan distance of all numbered tiles.
 
-    Manhattan distance:
-        absolute row difference + absolute column difference
+    The Manhattan distance for a tile is the sum of the absolute
+    difference between its current and goal row and column positions.
+    The blank tile, represented by 0, is not counted.
+
+    Parameters
+    ----------
+    board : Board
+        The 8-puzzle board to evaluate.
+
+    Returns
+    -------
+    int
+        The sum of the Manhattan distances of all numbered tiles.
     """
-
     total_distance = 0
 
     for current_index, tile in enumerate(board.tiles):
         if tile == 0:
             continue
 
-        current_row = current_index // 3
-        current_col = current_index % 3
+        current_row = current_index // BOARD_SIZE
+        current_col = current_index % BOARD_SIZE
 
         goal_index = Board.GOAL.index(tile)
-        goal_row = goal_index // 3
-        goal_col = goal_index % 3
+        goal_row = goal_index // BOARD_SIZE
+        goal_col = goal_index % BOARD_SIZE
 
         tile_distance = (
             abs(current_row - goal_row)

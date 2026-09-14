@@ -11,18 +11,25 @@ RANDOM_SEED = 42
 
 def generate_states_by_depth(max_depth=MAX_DEPTH):
     """
-    Run BFS starting from the goal state.
+    Generate all reachable board states up to a maximum depth using BFS.
 
-    Returns:
-        states_by_depth:
-            A dictionary where each key is a depth and each value
-            is a list of Board objects at that exact depth.
+    Breadth-first search begins at the goal state, so the depth assigned
+    to each board is its shortest distance from the goal.
 
-        distance:
-            A dictionary mapping each board's tuple representation
-            to its shortest distance from the goal.
+    Parameters
+    ----------
+    max_depth : int, optional
+        The maximum BFS depth to explore. Default is ``MAX_DEPTH``.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each depth to a list of ``Board`` objects
+        at exactly that depth.
+    dict
+        A dictionary mapping each board's tile tuple to its shortest
+        distance from the goal.
     """
-
     goal = Board(Board.GOAL)
 
     # Queue stores Board objects waiting to be processed.
@@ -49,7 +56,8 @@ def generate_states_by_depth(max_depth=MAX_DEPTH):
         for neighbor in current.get_neighbors():
             neighbor_key = neighbor.tiles
 
-            # If we have not seen this board before, BFS has found its shortest distance.
+            # If we have not seen this board before, BFS has found
+            # its shortest distance.
             if neighbor_key not in distance:
                 neighbor_depth = current_depth + 1
 
@@ -69,20 +77,31 @@ def sample_experiment_boards(
     samples_per_depth=SAMPLES_PER_DEPTH
 ):
     """
-    Randomly select a fixed number of boards from every even
-    depth between 2 and 24.
+    Randomly sample boards from each even search depth.
 
-    Returns:
-        A dictionary such as:
+    Boards are sampled from depths 2, 4, ..., ``MAX_DEPTH``.
+    Sampling is performed with replacement, so the same board may
+    be selected more than once.
 
-        {
-            2:  [100 boards],
-            4:  [100 boards],
-            ...
-            24: [100 boards]
-        }
+    Parameters
+    ----------
+    states_by_depth : dict
+        A dictionary mapping each depth to a list of ``Board`` objects.
+    samples_per_depth : int, optional
+        The number of boards to sample from each depth. Default is
+        ``SAMPLES_PER_DEPTH``.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each sampled depth to a list of randomly
+        selected ``Board`` objects.
+
+    Raises
+    ------
+    ValueError
+        If no boards are available at one of the requested depths.
     """
-
     experiment_boards = {}
 
     # range(2, 25, 2) gives:
@@ -106,7 +125,11 @@ def sample_experiment_boards(
 
 
 def main():
-    # This makes the random sample reproducible.
+    """
+    Generate BFS states and sample boards for the experiment.
+
+    The random seed is fixed so that the sampled boards are reproducible.
+    """
     random.seed(RANDOM_SEED)
 
     print("Running BFS...")
