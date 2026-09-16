@@ -1,4 +1,5 @@
 from board import Board
+from bfs import generate_states_by_depth
 
 BOARD_SIZE = 3
 
@@ -85,7 +86,7 @@ def h3(board):
     Returns
     -------
     int
-        Manhattan distance plus 2 for each linear conflict.
+        The Manhattan distance plus 2 for each linear conflict.
     """
     manhattan_distance = h2(board)
     conflicts = 0
@@ -100,8 +101,23 @@ def h3(board):
 
     return manhattan_distance + 2 * conflicts
 
+
 def count_row_conflicts(board, row):
-    """Count non-overlapping linear conflicts in one row."""
+    """
+    Count non-overlapping linear conflicts in one row.
+
+    Parameters
+    ----------
+    board : Board
+        The 8-puzzle board to evaluate.
+    row : int
+        The index of the row to check.
+
+    Returns
+    -------
+    int
+        The number of non-overlapping linear conflicts in the row.
+    """
     conflicts = 0
     conflicting_tiles = set()
 
@@ -153,7 +169,21 @@ def count_row_conflicts(board, row):
 
 
 def count_col_conflicts(board, col):
-    """Count non-overlapping linear conflicts in one column."""
+    """
+    Count non-overlapping linear conflicts in one column.
+
+    Parameters
+    ----------
+    board : Board
+        The 8-puzzle board to evaluate.
+    col : int
+        The index of the column to check.
+
+    Returns
+    -------
+    int
+        The number of non-overlapping linear conflicts in the column.
+    """
     conflicts = 0
     conflicting_tiles = set()
 
@@ -190,6 +220,8 @@ def count_col_conflicts(board, col):
             if second_goal_col != col:
                 continue
 
+            # Current order is first_tile before second_tile,
+            # but goal order is reversed.
             if first_goal_row > second_goal_row:
                 if (
                     first_tile not in conflicting_tiles
@@ -200,6 +232,7 @@ def count_col_conflicts(board, col):
                     conflicting_tiles.add(second_tile)
 
     return conflicts
+
 
 if __name__ == "__main__":
     goal = Board([0, 1, 2, 3, 4, 5, 6, 7, 8])
@@ -240,12 +273,38 @@ if __name__ == "__main__":
 
     print("\nRow conflict:")
     print(row_conflict)
-    print("h1:", h1(row_conflict))
+    print("h1:", h1(row_conflict))  # Expected: 5
     print("h2:", h2(row_conflict))  # Expected: 6
     print("h3:", h3(row_conflict))  # Expected: 8
 
     print("\nColumn conflict:")
     print(col_conflict)
-    print("h1:", h1(col_conflict))
+    print("h1:", h1(col_conflict))  # Expected: 5
     print("h2:", h2(col_conflict))  # Expected: 6
     print("h3:", h3(col_conflict))  # Expected: 8
+
+    assert h3(goal) == 0
+    assert h3(one_move_away) == 1
+    assert h3(two_moves_away) == 2
+    assert h3(row_conflict) == 8
+    assert h3(col_conflict) == 8
+
+    assert count_row_conflicts(row_conflict, 1) == 1
+    assert count_col_conflicts(col_conflict, 1) == 1
+
+    print("\nSpecific h3 tests passed!")
+
+    print("\nChecking h3 admissibility...")
+
+    _, distance = generate_states_by_depth()
+
+    for board_tiles, true_distance in distance.items():
+        board = Board(board_tiles)
+        heuristic_value = h3(board)
+
+        assert heuristic_value <= true_distance, (
+            f"h3 is not admissible for board:\n{board}\n"
+            f"h3 = {heuristic_value}, true distance = {true_distance}"
+        )
+
+    print("h3 passed admissibility test!")
