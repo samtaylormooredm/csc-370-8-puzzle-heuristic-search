@@ -69,6 +69,37 @@ def h2(board):
     return total_distance
 
 
+def h3(board):
+    """
+    Calculate Manhattan distance with linear conflict.
+
+    A linear conflict occurs when two tiles are in their goal row
+    or goal column but appear in the opposite order from their
+    goal positions. Each conflict adds 2 to the Manhattan distance.
+
+    Parameters
+    ----------
+    board : Board
+        The 8-puzzle board to evaluate.
+
+    Returns
+    -------
+    int
+        Manhattan distance plus 2 for each linear conflict.
+    """
+    manhattan_distance = h2(board)
+    conflicts = 0
+
+    # Check each row for linear conflicts.
+    for row in range(BOARD_SIZE):
+        conflicts += count_row_conflicts(board, row)
+
+    # Check each column for linear conflicts.
+    for col in range(BOARD_SIZE):
+        conflicts += count_col_conflicts(board, col)
+
+    return manhattan_distance + 2 * conflicts
+
 if __name__ == "__main__":
     goal = Board([0, 1, 2, 3, 4, 5, 6, 7, 8])
 
