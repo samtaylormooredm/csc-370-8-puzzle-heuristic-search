@@ -101,8 +101,53 @@ def h3(board):
     return manhattan_distance + 2 * conflicts
 
 def count_row_conflicts(board, row):
-    """Count linear conflicts in one row."""
+    """Count non-overlapping linear conflicts in one row."""
     conflicts = 0
+    conflicting_tiles = set()
+
+    start = row * BOARD_SIZE
+    end = start + BOARD_SIZE
+
+    row_tiles = board.tiles[start:end]
+
+    for first_col in range(BOARD_SIZE):
+        first_tile = row_tiles[first_col]
+
+        if first_tile == 0:
+            continue
+
+        first_goal_index = Board.GOAL.index(first_tile)
+        first_goal_row = first_goal_index // BOARD_SIZE
+        first_goal_col = first_goal_index % BOARD_SIZE
+
+        # The tile must belong in this row.
+        if first_goal_row != row:
+            continue
+
+        for second_col in range(first_col + 1, BOARD_SIZE):
+            second_tile = row_tiles[second_col]
+
+            if second_tile == 0:
+                continue
+
+            second_goal_index = Board.GOAL.index(second_tile)
+            second_goal_row = second_goal_index // BOARD_SIZE
+            second_goal_col = second_goal_index % BOARD_SIZE
+
+            # The second tile must also belong in this row.
+            if second_goal_row != row:
+                continue
+
+            # Current order is first_tile before second_tile,
+            # but goal order is reversed.
+            if first_goal_col > second_goal_col:
+                if (
+                    first_tile not in conflicting_tiles
+                    and second_tile not in conflicting_tiles
+                ):
+                    conflicts += 1
+                    conflicting_tiles.add(first_tile)
+                    conflicting_tiles.add(second_tile)
 
     return conflicts
 
