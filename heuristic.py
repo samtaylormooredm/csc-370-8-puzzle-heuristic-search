@@ -210,22 +210,42 @@ if __name__ == "__main__":
 
     challenging_board = Board([7, 2, 4, 5, 0, 6, 8, 3, 1])
 
+    row_conflict = Board([0, 2, 1, 3, 4, 5, 6, 7, 8])
+
+    col_conflict = Board([0, 1, 2, 6, 4, 5, 3, 7, 8])
+
     print("Goal:")
     print(goal)
     print("h1:", h1(goal))  # Expected: 0
     print("h2:", h2(goal))  # Expected: 0
+    print("h3:", h3(goal))  # Expected: 0
 
     print("\nOne move away:")
     print(one_move_away)
     print("h1:", h1(one_move_away))  # Expected: 1
     print("h2:", h2(one_move_away))  # Expected: 1
+    print("h3:", h3(one_move_away))  # Expected: 1
 
     print("\nTwo moves away:")
     print(two_moves_away)
     print("h1:", h1(two_moves_away))  # Expected: 2
     print("h2:", h2(two_moves_away))  # Expected: 2
+    print("h3:", h3(two_moves_away))  # Expected: 2
 
     print("\nChallenging board:")
     print(challenging_board)
     print("h1:", h1(challenging_board))  # Expected: 8
     print("h2:", h2(challenging_board))  # Expected: 18
+    print("h3:", h3(challenging_board))
+
+    print("\nRow conflict:")
+    print(row_conflict)
+    print("h1:", h1(row_conflict))  # Expected: 2
+    print("h2:", h2(row_conflict))  # Expected: 2
+    print("h3:", h3(row_conflict))  # Expected: 4
+
+    print("\nColumn conflict:")
+    print(col_conflict)
+    print("h1:", h1(col_conflict))  # Expected: 2
+    print("h2:", h2(col_conflict))  # Expected: 2
+    print("h3:", h3(col_conflict))  # Expected: 4
