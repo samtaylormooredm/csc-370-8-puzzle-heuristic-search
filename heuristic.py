@@ -236,66 +236,37 @@ def count_col_conflicts(board, col):
 
 if __name__ == "__main__":
     goal = Board([0, 1, 2, 3, 4, 5, 6, 7, 8])
-
     one_move_away = Board([1, 0, 2, 3, 4, 5, 6, 7, 8])
-
     two_moves_away = Board([1, 2, 0, 3, 4, 5, 6, 7, 8])
-
-    challenging_board = Board([7, 2, 4, 5, 0, 6, 8, 3, 1])
-
     row_conflict = Board([0, 1, 2, 5, 4, 8, 3, 6, 7])
-
     col_conflict = Board([0, 2, 5, 3, 4, 8, 6, 1, 7])
 
-    print("Goal:")
-    print(goal)
-    print("h1:", h1(goal))  # Expected: 0
-    print("h2:", h2(goal))  # Expected: 0
-    print("h3:", h3(goal))  # Expected: 0
+    # Check h1
+    assert h1(goal) == 0
+    assert h1(one_move_away) == 1
+    assert h1(two_moves_away) == 2
 
-    print("\nOne move away:")
-    print(one_move_away)
-    print("h1:", h1(one_move_away))  # Expected: 1
-    print("h2:", h2(one_move_away))  # Expected: 1
-    print("h3:", h3(one_move_away))  # Expected: 1
+    # Check h2
+    assert h2(goal) == 0
+    assert h2(one_move_away) == 1
+    assert h2(two_moves_away) == 2
+    assert h2(row_conflict) == 6
+    assert h2(col_conflict) == 6
 
-    print("\nTwo moves away:")
-    print(two_moves_away)
-    print("h1:", h1(two_moves_away))  # Expected: 2
-    print("h2:", h2(two_moves_away))  # Expected: 2
-    print("h3:", h3(two_moves_away))  # Expected: 2
-
-    print("\nChallenging board:")
-    print(challenging_board)
-    print("h1:", h1(challenging_board))  # Expected: 8
-    print("h2:", h2(challenging_board))  # Expected: 18
-    print("h3:", h3(challenging_board))
-
-    print("\nRow conflict:")
-    print(row_conflict)
-    print("h1:", h1(row_conflict))  # Expected: 5
-    print("h2:", h2(row_conflict))  # Expected: 6
-    print("h3:", h3(row_conflict))  # Expected: 8
-
-    print("\nColumn conflict:")
-    print(col_conflict)
-    print("h1:", h1(col_conflict))  # Expected: 5
-    print("h2:", h2(col_conflict))  # Expected: 6
-    print("h3:", h3(col_conflict))  # Expected: 8
-
+    # Check h3
     assert h3(goal) == 0
     assert h3(one_move_away) == 1
     assert h3(two_moves_away) == 2
     assert h3(row_conflict) == 8
     assert h3(col_conflict) == 8
 
+    # Check intended linear conflicts.
     assert count_row_conflicts(row_conflict, 1) == 1
     assert count_col_conflicts(col_conflict, 1) == 1
 
-    print("\nSpecific h3 tests passed!")
+    print("Heuristic tests passed.")
 
-    print("\nChecking h3 admissibility...")
-
+    # Check h3 admissibility against exact BFS distances.
     _, distance = generate_states_by_depth()
 
     for board_tiles, true_distance in distance.items():
@@ -307,4 +278,4 @@ if __name__ == "__main__":
             f"h3 = {heuristic_value}, true distance = {true_distance}"
         )
 
-    print("h3 passed admissibility test!")
+    print("h3 passed admissibility test.")
