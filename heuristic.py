@@ -260,7 +260,6 @@ if __name__ == "__main__":
     assert count_row_conflicts(row_conflict, 1) == 1
     assert count_col_conflicts(col_conflict, 1) == 1
 
-    print("Heuristic tests passed.")
 
     # Check h3 admissibility against exact BFS distances
     _, distance = generate_states_by_depth()
@@ -274,4 +273,4 @@ if __name__ == "__main__":
             f"h3 = {heuristic_value}, true distance = {true_distance}"
         )
 
-    print("h3 passed admissibility test.")
+    print("All heuristic tests passed!")
