@@ -1,5 +1,5 @@
-from board import Board
 from bfs import generate_states_by_depth
+from board import Board
 
 BOARD_SIZE = 3
 
@@ -156,14 +156,13 @@ def count_row_conflicts(board, row):
 
             # Current order is first_tile before second_tile,
             # but goal order is reversed.
-            if first_goal_col > second_goal_col:
-                if (
-                    first_tile not in conflicting_tiles
-                    and second_tile not in conflicting_tiles
-                ):
-                    conflicts += 1
-                    conflicting_tiles.add(first_tile)
-                    conflicting_tiles.add(second_tile)
+            if first_goal_col > second_goal_col and (
+                first_tile not in conflicting_tiles
+                and second_tile not in conflicting_tiles
+            ):
+                conflicts += 1
+                conflicting_tiles.add(first_tile)
+                conflicting_tiles.add(second_tile)
 
     return conflicts
 
@@ -187,10 +186,7 @@ def count_col_conflicts(board, col):
     conflicts = 0
     conflicting_tiles = set()
 
-    col_tiles = [
-        board.tiles[row * BOARD_SIZE + col]
-        for row in range(BOARD_SIZE)
-    ]
+    col_tiles = [board.tiles[row * BOARD_SIZE + col] for row in range(BOARD_SIZE)]
 
     for first_row in range(BOARD_SIZE):
         first_tile = col_tiles[first_row]
@@ -222,14 +218,14 @@ def count_col_conflicts(board, col):
 
             # Current order is first_tile before second_tile,
             # but goal order is reversed.
-            if first_goal_row > second_goal_row:
-                if (
-                    first_tile not in conflicting_tiles
-                    and second_tile not in conflicting_tiles
-                ):
-                    conflicts += 1
-                    conflicting_tiles.add(first_tile)
-                    conflicting_tiles.add(second_tile)
+            if (
+                first_goal_row > second_goal_row
+                and first_tile not in conflicting_tiles
+                and second_tile not in conflicting_tiles
+            ):
+                conflicts += 1
+                conflicting_tiles.add(first_tile)
+                conflicting_tiles.add(second_tile)
 
     return conflicts
 
@@ -260,13 +256,13 @@ if __name__ == "__main__":
     assert h3(row_conflict) == 8
     assert h3(col_conflict) == 8
 
-    # Check intended linear conflicts.
+    # Check intended linear conflicts
     assert count_row_conflicts(row_conflict, 1) == 1
     assert count_col_conflicts(col_conflict, 1) == 1
 
     print("Heuristic tests passed.")
 
-    # Check h3 admissibility against exact BFS distances.
+    # Check h3 admissibility against exact BFS distances
     _, distance = generate_states_by_depth()
 
     for board_tiles, true_distance in distance.items():
