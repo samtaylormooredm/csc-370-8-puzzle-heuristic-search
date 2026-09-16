@@ -100,6 +100,19 @@ def h3(board):
 
     return manhattan_distance + 2 * conflicts
 
+def count_row_conflicts(board, row):
+    """Count linear conflicts in one row."""
+    conflicts = 0
+
+    return conflicts
+
+
+def count_col_conflicts(board, col):
+    """Count linear conflicts in one column."""
+    conflicts = 0
+
+    return conflicts
+
 if __name__ == "__main__":
     goal = Board([0, 1, 2, 3, 4, 5, 6, 7, 8])
 
