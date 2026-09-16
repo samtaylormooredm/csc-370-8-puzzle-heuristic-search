@@ -1,4 +1,4 @@
-from heapq import heappush, heappop
+from heapq import heappop, heappush
 from itertools import count
 from time import perf_counter
 
@@ -28,15 +28,12 @@ def astar(start_board, heuristic):
     start_g = 0
     start_f = start_g + heuristic(start_board)
 
-    heappush(
-        frontier,
-        (start_f, start_g, next(tie_breaker), start_board)
-    )
+    heappush(frontier, (start_f, start_g, next(tie_breaker), start_board))
 
     best_g = {start_board.tiles: 0}
 
     nodes_expanded = 0
-    nodes_generated = 1   # The start board already exists in the frontier.
+    nodes_generated = 1  # The start board already exists in the frontier.
 
     while frontier:
         f_value, g_value, _, current_board = heappop(frontier)
@@ -68,10 +65,7 @@ def astar(start_board, heuristic):
 
                 new_f = new_g + heuristic(neighbor)
 
-                heappush(
-                    frontier,
-                    (new_f, new_g, next(tie_breaker), neighbor)
-                )
+                heappush(frontier, (new_f, new_g, next(tie_breaker), neighbor))
 
                 nodes_generated += 1
 

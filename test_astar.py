@@ -1,13 +1,10 @@
+from astar import astar
 from board import Board
 from heuristic import h1, h2, h3
-from astar import astar
-
 
 # Test 1: A* should solve the goal board immediately.
 # The solution cost should be 0 because no moves are needed.
-goal = Board([0, 1, 2,
-              3, 4, 5,
-              6, 7, 8])
+goal = Board([0, 1, 2, 3, 4, 5, 6, 7, 8])
 
 goal_result = astar(goal, h1)
 
@@ -20,9 +17,7 @@ assert goal_result["solution_cost"] == 0
 
 
 # This board is exactly 2 moves away from the goal.
-two_moves_away = Board([1, 2, 0,
-                        3, 4, 5,
-                        6, 7, 8])
+two_moves_away = Board([1, 2, 0, 3, 4, 5, 6, 7, 8])
 
 
 # Test 2: A* using h1 should find the correct shortest path.
@@ -67,9 +62,7 @@ assert h3_result["solution_cost"] == 2
 
 # Test 5: Check A* on a board where h3 detects a linear conflict.
 # For this board, h3 should be stronger than h2.
-linear_conflict_board = Board([0, 1, 2,
-                               5, 4, 8,
-                               3, 6, 7])
+linear_conflict_board = Board([0, 1, 2, 5, 4, 8, 3, 6, 7])
 
 print("\nTest 5: linear-conflict board")
 print(linear_conflict_board)
