@@ -210,9 +210,9 @@ if __name__ == "__main__":
 
     challenging_board = Board([7, 2, 4, 5, 0, 6, 8, 3, 1])
 
-    row_conflict = Board([0, 2, 1, 3, 4, 5, 6, 7, 8])
+    row_conflict = Board([0, 1, 2, 5, 4, 8, 3, 6, 7])
 
-    col_conflict = Board([0, 1, 2, 6, 4, 5, 3, 7, 8])
+    col_conflict = Board([0, 2, 5, 3, 4, 8, 6, 1, 7])
 
     print("Goal:")
     print(goal)
@@ -240,12 +240,12 @@ if __name__ == "__main__":
 
     print("\nRow conflict:")
     print(row_conflict)
-    print("h1:", h1(row_conflict))  # Expected: 2
-    print("h2:", h2(row_conflict))  # Expected: 2
-    print("h3:", h3(row_conflict))  # Expected: 4
+    print("h1:", h1(row_conflict))
+    print("h2:", h2(row_conflict))  # Expected: 6
+    print("h3:", h3(row_conflict))  # Expected: 8
 
     print("\nColumn conflict:")
     print(col_conflict)
-    print("h1:", h1(col_conflict))  # Expected: 2
-    print("h2:", h2(col_conflict))  # Expected: 2
-    print("h3:", h3(col_conflict))  # Expected: 4
+    print("h1:", h1(col_conflict))
+    print("h2:", h2(col_conflict))  # Expected: 6
+    print("h3:", h3(col_conflict))  # Expected: 8
