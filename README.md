@@ -19,7 +19,8 @@ The experiment is based on the 8-puzzle heuristic search results presented by Ru
 - `heuristic.py` — implements and tests the three heuristics
 - `bfs.py` — generates solvable puzzle states by exact depth and samples boards for experiments
 - `test_board.py` — basic tests for board behavior
-- `a_star.py` — implements A* search
+- `astar.py` — implements A* search
+- `test_astar.py` — tests for A* behavior
 
 ## Experiment
 

@@ -7,13 +7,18 @@ def astar(start_board, heuristic):
     """
     Solve an 8-puzzle using A* search.
 
-    Parameters:
-        start_board: a Board object
-        heuristic: a function among h1, h2, or h3
+    Parameters
+    ----------
+    start_board : Board
+        Initial board configuration to solve.
+    heuristic : callable
+        Heuristic function used to estimate the remaining cost to the goal.
 
-    Returns:
-        A dictionary containing the solution cost, number of nodes
-        expanded/generated, and runtime.
+    Returns
+    -------
+    dict
+        Search results containing whether a solution was found, the solution
+        cost, number of nodes expanded and generated, and runtime in seconds.
     """
 
     start_time = perf_counter()
