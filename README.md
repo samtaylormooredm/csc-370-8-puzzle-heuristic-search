@@ -4,6 +4,9 @@
 
 This project implements A* search for the 8-puzzle and compares the effect of different admissible heuristics on search performance.
 
+The experiment is based on the 8-puzzle heuristic search results presented by Russell and Norvig in *Artificial Intelligence: A Modern Approach*. The third heuristic, linear conflict, is based on work by Hansson, Mayer, and Yung on admissible heuristics.
+
+
 ## Heuristics
 
 - **h1:** Misplaced tiles
