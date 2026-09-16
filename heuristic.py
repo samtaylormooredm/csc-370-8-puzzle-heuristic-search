@@ -153,8 +153,51 @@ def count_row_conflicts(board, row):
 
 
 def count_col_conflicts(board, col):
-    """Count linear conflicts in one column."""
+    """Count non-overlapping linear conflicts in one column."""
     conflicts = 0
+    conflicting_tiles = set()
+
+    col_tiles = [
+        board.tiles[row * BOARD_SIZE + col]
+        for row in range(BOARD_SIZE)
+    ]
+
+    for first_row in range(BOARD_SIZE):
+        first_tile = col_tiles[first_row]
+
+        if first_tile == 0:
+            continue
+
+        first_goal_index = Board.GOAL.index(first_tile)
+        first_goal_row = first_goal_index // BOARD_SIZE
+        first_goal_col = first_goal_index % BOARD_SIZE
+
+        # The tile must belong in this column.
+        if first_goal_col != col:
+            continue
+
+        for second_row in range(first_row + 1, BOARD_SIZE):
+            second_tile = col_tiles[second_row]
+
+            if second_tile == 0:
+                continue
+
+            second_goal_index = Board.GOAL.index(second_tile)
+            second_goal_row = second_goal_index // BOARD_SIZE
+            second_goal_col = second_goal_index % BOARD_SIZE
+
+            # The second tile must also belong in this column.
+            if second_goal_col != col:
+                continue
+
+            if first_goal_row > second_goal_row:
+                if (
+                    first_tile not in conflicting_tiles
+                    and second_tile not in conflicting_tiles
+                ):
+                    conflicts += 1
+                    conflicting_tiles.add(first_tile)
+                    conflicting_tiles.add(second_tile)
 
     return conflicts
 
