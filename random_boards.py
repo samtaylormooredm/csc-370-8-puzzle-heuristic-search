@@ -20,13 +20,23 @@ def generate_random_board(num_moves):
         A randomized, solvable 8-puzzle board.
     """
     current = Board(Board.GOAL)
+    previous = None
 
     for _ in range(num_moves):
         neighbors = current.get_neighbors()
+
+        # Prevent immediately undoing the previous move.
+        if previous is not None:
+            neighbors = [
+                neighbor
+                for neighbor in neighbors
+                if neighbor.tiles != previous.tiles
+            ]
+
+        previous = current
         current = random.choice(neighbors)
 
     return current
-
 
 def generate_experiment_boards():
     """
