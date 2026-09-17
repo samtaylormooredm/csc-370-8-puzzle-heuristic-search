@@ -19,7 +19,13 @@ def generate_random_board(num_moves):
     Board
         A randomized, solvable 8-puzzle board.
     """
-    pass
+    current = Board(Board.GOAL)
+
+    for _ in range(num_moves):
+        neighbors = current.get_neighbors()
+        current = random.choice(neighbors)
+
+    return current
 
 
 def generate_experiment_boards():
@@ -35,13 +41,13 @@ def generate_experiment_boards():
 
 
 def main():
-    """Generate and display random experiment boards."""
+    """Generate and display a random board."""
     random.seed(RANDOM_SEED)
 
-    experiment_boards = generate_experiment_boards()
+    board = generate_random_board(10)
 
-    # TODO: Display or summarize generated boards.
-
+    print("Random board:")
+    print(board)
 
 if __name__ == "__main__":
     main()
