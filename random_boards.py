@@ -22,7 +22,7 @@ def generate_random_board(num_moves):
     current = Board(Board.GOAL)
     previous = None
 
-    for _ in range(num_moves):
+    for move in range(num_moves):
         neighbors = current.get_neighbors()
 
         # Prevent immediately undoing the previous move.
@@ -35,6 +35,9 @@ def generate_random_board(num_moves):
 
         previous = current
         current = random.choice(neighbors)
+
+        print(f"\nMove {move + 1}:")
+        print(current)
 
     return current
 
