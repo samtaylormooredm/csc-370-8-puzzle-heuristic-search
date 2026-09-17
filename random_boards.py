@@ -68,18 +68,17 @@ def generate_experiment_boards():
 
 
 def main():
-    """Generate a random board and check its actual solution depth."""
+    """Generate and display experiment boards."""
     random.seed(RANDOM_SEED)
 
-    board = generate_random_board(10)
+    experiment_boards = generate_experiment_boards()
 
-    print("Random board:")
-    print(board)
+    for depth, boards in experiment_boards.items():
+        print(f"\nDepth {depth}:")
 
-    result = astar(board, h2)
-
-    print("\nRandom moves:", 10)
-    print("Actual solution depth:", result["solution_cost"])
+        for board in boards:
+            print(board)
+            print()
 
 
 if __name__ == "__main__":
