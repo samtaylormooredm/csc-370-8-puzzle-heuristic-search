@@ -1,8 +1,12 @@
 import random
 
+from astar import astar
 from board import Board
+from heuristic import h2
 
 RANDOM_SEED = 100  # Arbitrary fixed seed used for reproducible experiments.
+MAX_DEPTH = 6
+SAMPLES_PER_DEPTH = 2
 
 
 def generate_random_board(num_moves):
@@ -22,7 +26,7 @@ def generate_random_board(num_moves):
     current = Board(Board.GOAL)
     previous = None
 
-    for move in range(num_moves):
+    for _ in range(num_moves):
         neighbors = current.get_neighbors()
 
         # Prevent immediately undoing the previous move.
@@ -36,31 +40,47 @@ def generate_random_board(num_moves):
         previous = current
         current = random.choice(neighbors)
 
-        print(f"\nMove {move + 1}:")
-        print(current)
-
     return current
+
 
 def generate_experiment_boards():
     """
-    Generate the random boards used in the experiment.
+    Generate random boards grouped by solution depth.
 
     Returns
     -------
     dict
         Randomly generated boards grouped by solution depth.
     """
-    pass
+    experiment_boards = {}
+
+    for target_depth in range(2, MAX_DEPTH + 1, 2):
+        experiment_boards[target_depth] = []
+
+        while len(experiment_boards[target_depth]) < SAMPLES_PER_DEPTH:
+            board = generate_random_board(target_depth)
+            result = astar(board, h2)
+
+            if result["solution_cost"] == target_depth:
+                experiment_boards[target_depth].append(board)
+
+    return experiment_boards
 
 
 def main():
-    """Generate and display a random board."""
+    """Generate a random board and check its actual solution depth."""
     random.seed(RANDOM_SEED)
 
     board = generate_random_board(10)
 
     print("Random board:")
     print(board)
+
+    result = astar(board, h2)
+
+    print("\nRandom moves:", 10)
+    print("Actual solution depth:", result["solution_cost"])
+
 
 if __name__ == "__main__":
     main()

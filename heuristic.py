@@ -1,4 +1,3 @@
-from random_boards import generate_states_by_depth
 from board import Board
 
 BOARD_SIZE = 3
