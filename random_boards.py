@@ -64,11 +64,6 @@ def generate_experiment_boards():
             board = generate_random_board(target_depth)
             result = astar(board, h2)
 
-            print(
-            f"Target: {target_depth}, "
-            f"candidate depth: {result['solution_cost']}"
-    )
-
             # Only keep boards whose actual solution depth matches the target depth.
             if result["solution_cost"] == target_depth:
                 experiment_boards[target_depth].append(board)

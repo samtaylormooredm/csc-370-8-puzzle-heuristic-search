@@ -1,6 +1,8 @@
+import random
+
 from astar import astar
 from heuristic import h1, h2, h3
-from random_boards import generate_experiment_boards
+from random_boards import RANDOM_SEED, generate_experiment_boards
 
 
 def run_experiments(experiment_boards):
@@ -28,6 +30,8 @@ def run_experiments(experiment_boards):
 
 def main():
     """Generate experiment boards and run A* with each heuristic."""
+    random.seed(RANDOM_SEED)
+
     experiment_boards = generate_experiment_boards()
     results = run_experiments(experiment_boards)
 
