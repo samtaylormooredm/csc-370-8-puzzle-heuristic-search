@@ -5,8 +5,8 @@ from board import Board
 from heuristic import h2
 
 RANDOM_SEED = 100  # Arbitrary fixed seed used for reproducible experiments.
-MAX_DEPTH = 6
-SAMPLES_PER_DEPTH = 2
+MAX_DEPTH = 10
+SAMPLES_PER_DEPTH = 4
 
 
 def generate_random_board(num_moves):
@@ -61,6 +61,7 @@ def generate_experiment_boards():
             board = generate_random_board(target_depth)
             result = astar(board, h2)
 
+            # Only keep boards whose actual solution depth matches the target depth.
             if result["solution_cost"] == target_depth:
                 experiment_boards[target_depth].append(board)
 
