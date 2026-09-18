@@ -32,9 +32,7 @@ def generate_random_board(num_moves):
         # Prevent immediately undoing the previous move.
         if previous is not None:
             neighbors = [
-                neighbor
-                for neighbor in neighbors
-                if neighbor.tiles != previous.tiles
+                neighbor for neighbor in neighbors if neighbor.tiles != previous.tiles
             ]
 
         previous = current
@@ -81,6 +79,7 @@ def main():
     random.seed(RANDOM_SEED)
 
     generate_experiment_boards()
+
 
 if __name__ == "__main__":
     main()

@@ -6,7 +6,19 @@ from random_boards import RANDOM_SEED, generate_experiment_boards
 
 
 def run_experiments(experiment_boards):
-    """Run A* with each heuristic on all experiment boards."""
+    """
+    Run A* with each heuristic on all experiment boards.
+
+    Parameters
+    ----------
+    experiment_boards : dict
+        Dictionary mapping solution depths to lists of Board objects.
+
+    Returns
+    -------
+    dict
+        Nested dictionary containing A* results for each depth and heuristic.
+    """
     heuristics = {
         "h1": h1,
         "h2": h2,
