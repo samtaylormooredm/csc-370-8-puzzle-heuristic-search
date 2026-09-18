@@ -5,8 +5,8 @@ from board import Board
 from heuristic import h2
 
 RANDOM_SEED = 100  # Arbitrary fixed seed used for reproducible experiments.
-MAX_DEPTH = 10
-SAMPLES_PER_DEPTH = 4
+SAMPLES_PER_DEPTH = 100
+MAX_DEPTH = 24
 
 
 def generate_random_board(num_moves):
@@ -56,31 +56,36 @@ def generate_experiment_boards():
 
     for target_depth in range(2, MAX_DEPTH + 1, 2):
         experiment_boards[target_depth] = []
+        attempts = 0
 
         while len(experiment_boards[target_depth]) < SAMPLES_PER_DEPTH:
+            attempts += 1
+
             board = generate_random_board(target_depth)
             result = astar(board, h2)
+
+            print(
+            f"Target: {target_depth}, "
+            f"candidate depth: {result['solution_cost']}"
+    )
 
             # Only keep boards whose actual solution depth matches the target depth.
             if result["solution_cost"] == target_depth:
                 experiment_boards[target_depth].append(board)
 
+        print(
+            f"Depth {target_depth}: "
+            f"{SAMPLES_PER_DEPTH} boards generated in {attempts} attempts"
+        )
+
     return experiment_boards
 
 
 def main():
-    """Generate and display experiment boards."""
+    """Generate experiment boards."""
     random.seed(RANDOM_SEED)
 
-    experiment_boards = generate_experiment_boards()
-
-    for depth, boards in experiment_boards.items():
-        print(f"\nDepth {depth}:")
-
-        for board in boards:
-            print(board)
-            print()
-
+    generate_experiment_boards()
 
 if __name__ == "__main__":
     main()
