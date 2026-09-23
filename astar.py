@@ -3,6 +3,20 @@ from itertools import count
 from time import perf_counter
 
 
+def get_tie_priority(g_value, tie_breaking):
+    """Return the priority value used to break ties between equal f-values."""
+    if tie_breaking == "small_g":
+        return g_value
+
+    if tie_breaking == "large_g":
+        return -g_value
+
+    if tie_breaking == "fifo":
+        return 0
+
+    raise ValueError(f"Unknown tie-breaking method: {tie_breaking}")
+
+
 def astar(start_board, heuristic, tie_breaking="small_g"):
     """
     Solve an 8-puzzle using A* search.
@@ -13,6 +27,9 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
         Initial board configuration to solve.
     heuristic : callable
         Heuristic function used to estimate the remaining cost to the goal.
+    tie_breaking : str, optional
+        Method used to break ties between equal f-values. Options are
+        "small_g", "large_g", and "fifo".
 
     Returns
     -------
@@ -32,7 +49,7 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
         frontier,
         (
             start_f,
-            get_tie_priority(start_g),
+            get_tie_priority(start_g, tie_breaking),
             next(tie_breaker),
             start_g,
             start_board,
@@ -42,7 +59,7 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
     best_g = {start_board.tiles: 0}
 
     nodes_expanded = 0
-    nodes_generated = 1  # The start board already exists in the frontier.
+    nodes_generated = 1
 
     while frontier:
         _, _, _, g_value, current_board = heappop(frontier)
@@ -78,7 +95,7 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
                     frontier,
                     (
                         new_f,
-                        get_tie_priority(new_g),
+                        get_tie_priority(new_g, tie_breaking),
                         next(tie_breaker),
                         new_g,
                         neighbor,
@@ -86,16 +103,6 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
                 )
 
                 nodes_generated += 1
-    
-    def get_tie_priority(g_value):
-        if tie_breaking == "small_g":
-            return g_value
-        if tie_breaking == "large_g":
-            return -g_value
-        if tie_breaking == "fifo":
-            return 0
-
-        raise ValueError(f"Unknown tie-breaking method: {tie_breaking}")
 
     end_time = perf_counter()
 

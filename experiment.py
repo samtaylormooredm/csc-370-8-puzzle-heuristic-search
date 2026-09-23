@@ -60,7 +60,7 @@ def run_experiments(experiment_boards):
             results[depth][heuristic_name] = []
 
             for board in boards:
-                result = astar(board, heuristic)
+                result = astar(board, heuristic, tie_breaking="large_g")
                 result["effective_branching_factor"] = (
                     calculate_effective_branching_factor(
                         result["nodes_generated"],
