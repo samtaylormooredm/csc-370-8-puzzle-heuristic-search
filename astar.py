@@ -28,7 +28,16 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
     start_g = 0
     start_f = start_g + heuristic(start_board)
 
-    heappush(frontier, (start_f, start_g, next(tie_breaker), start_board))
+    heappush(
+        frontier,
+        (
+            start_f,
+            get_tie_priority(start_g),
+            next(tie_breaker),
+            start_g,
+            start_board,
+        ),
+    )
 
     best_g = {start_board.tiles: 0}
 
@@ -36,7 +45,7 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
     nodes_generated = 1  # The start board already exists in the frontier.
 
     while frontier:
-        f_value, g_value, _, current_board = heappop(frontier)
+        _, _, _, g_value, current_board = heappop(frontier)
 
         # Ignore an old/worse copy of this board in the priority queue.
         if g_value != best_g[current_board.tiles]:
@@ -68,11 +77,11 @@ def astar(start_board, heuristic, tie_breaking="small_g"):
                 heappush(
                     frontier,
                     (
-                        start_f,
-                        get_tie_priority(start_g),
+                        new_f,
+                        get_tie_priority(new_g),
                         next(tie_breaker),
-                        start_g,
-                        start_board,
+                        new_g,
+                        neighbor,
                     ),
                 )
 
