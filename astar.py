@@ -3,7 +3,7 @@ from itertools import count
 from time import perf_counter
 
 
-def astar(start_board, heuristic):
+def astar(start_board, heuristic, tie_breaking="small_g"):
     """
     Solve an 8-puzzle using A* search.
 
@@ -65,9 +65,28 @@ def astar(start_board, heuristic):
 
                 new_f = new_g + heuristic(neighbor)
 
-                heappush(frontier, (new_f, new_g, next(tie_breaker), neighbor))
+                heappush(
+                    frontier,
+                    (
+                        start_f,
+                        get_tie_priority(start_g),
+                        next(tie_breaker),
+                        start_g,
+                        start_board,
+                    ),
+                )
 
                 nodes_generated += 1
+    
+    def get_tie_priority(g_value):
+        if tie_breaking == "small_g":
+            return g_value
+        if tie_breaking == "large_g":
+            return -g_value
+        if tie_breaking == "fifo":
+            return 0
+
+        raise ValueError(f"Unknown tie-breaking method: {tie_breaking}")
 
     end_time = perf_counter()
 
